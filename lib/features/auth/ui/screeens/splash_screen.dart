@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:rasel_shop/app/assets_path.dart';
+import '../widgets/app_icon_widget.dart';
+import 'email_varification_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -11,20 +11,30 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    _moveToNextScreen();
+  }
+
+  Future<void> _moveToNextScreen() async {
+    await Future.delayed(const Duration(seconds: 3));
+    Navigator.pushReplacementNamed(context, EmailVerificationScreen.name);
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(16.0),
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Spacer(),
-              SvgPicture.asset(AssetesPath.applogosvg,
-                width: 120,),
+            ApplogoWidget(),
               Spacer(),
-              const CircularProgressIndicator(),
-
+              CircularProgressIndicator(),
             ],
           ),
         ),
