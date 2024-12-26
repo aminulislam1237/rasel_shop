@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:rasel_shop/features/common/ui/screens/main_bottom_nav_screen.dart';
+import 'package:rasel_shop/features/home/ui/screeens/home_screen.dart';
 import '../widgets/app_icon_widget.dart';
-import 'email_varification_screen.dart';
+//import 'email_varification_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -19,7 +21,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _moveToNextScreen() async {
     await Future.delayed(const Duration(seconds: 3));
-    Navigator.pushReplacementNamed(context, EmailVerificationScreen.name);
+    Navigator.pushReplacementNamed(context, MainBottomNavScreen.name);
   }
 
   @override
@@ -32,7 +34,7 @@ class _SplashScreenState extends State<SplashScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Spacer(),
-            ApplogoWidget(),
+              ApplogoWidget(),
               Spacer(),
               CircularProgressIndicator(),
             ],
