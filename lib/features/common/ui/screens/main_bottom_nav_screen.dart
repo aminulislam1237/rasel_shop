@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rasel_shop/features/category/ui/screens/category_List_screen.dart';
 import 'package:rasel_shop/features/common/ui/controllers/main_bottom_nav_controller.dart';
 import 'package:rasel_shop/features/home/ui/screeens/home_screen.dart';
 
@@ -15,9 +16,7 @@ class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
   final List<Widget> _screens = const [
 
      HomeScreen(),
-    HomeScreen(),
-    HomeScreen(),
-    HomeScreen(),
+   CategoryListScreen(),
   ];
 
   @override
