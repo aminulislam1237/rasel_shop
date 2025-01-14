@@ -8,7 +8,9 @@ import 'package:rasel_shop/features/auth/ui/screeens/otp_verification_screen.dar
 import 'package:rasel_shop/features/auth/ui/screeens/splash_screen.dart';
 import 'package:rasel_shop/features/category/ui/screens/category_list_screen.dart';
 import 'package:rasel_shop/features/common/ui/screens/main_bottom_nav_screen.dart';
+import 'package:rasel_shop/features/product/ui/screens/product_details_screen.dart';
 import 'package:rasel_shop/features/product/ui/screens/product_list_screen.dart';
+import 'package:rasel_shop/features/wishlist/ui/screens/wish_list_screen.dart';
 
 class Craftybay extends StatelessWidget {
   const Craftybay({super.key});
@@ -46,6 +48,10 @@ class Craftybay extends StatelessWidget {
           case ProductListScreen.name:
             String name = settings.arguments as String;
             widget = ProductListScreen(categoryName: name);
+            break;
+          case ProductDetailsScreen.name:
+            int  productId = settings.arguments as int;
+            widget = ProductDetailsScreen(productId: productId);
             break;
           default:
             widget = const SplashScreen(); // Fallback for unknown routes

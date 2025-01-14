@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:rasel_shop/features/cart/ui/screens/cart_list_screen.dart';
 import 'package:rasel_shop/features/category/ui/screens/category_List_screen.dart';
 import 'package:rasel_shop/features/common/ui/controllers/main_bottom_nav_controller.dart';
 import 'package:rasel_shop/features/home/ui/screeens/home_screen.dart';
+import 'package:rasel_shop/features/wishlist/ui/screens/wish_list_screen.dart';
 
 class MainBottomNavScreen extends StatefulWidget {
   const MainBottomNavScreen({super.key});
@@ -17,6 +19,8 @@ class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
 
      HomeScreen(),
    CategoryListScreen(),
+    CartListScreen(),
+    WishListScreen(),
   ];
 
   @override
