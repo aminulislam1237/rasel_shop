@@ -33,7 +33,7 @@ class _CartListScreenState extends State<CartListScreen> {
                 child: ListView.builder(
                     itemCount: 5,
                     itemBuilder: (context, index) {
-                      return CartProductItemWidget();
+                      return const CartProductItemWidget();
                     })),
             _buildPriceAndAddToCartSection(textTheme),
           ],

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:rasel_shop/app/assets_path.dart';
+import 'package:rasel_shop/features/common/data/models/category_model.dart';
+import 'package:rasel_shop/features/common/ui/controllers/category_list_controller.dart';
 import 'package:rasel_shop/features/common/ui/widgets/product_iteam_widget.dart';
 import 'package:rasel_shop/features/home/ui/controllers/home_banner_list_controller.dart';
 import 'package:rasel_shop/features/home/ui/widgets/search_bar.dart';
@@ -23,12 +25,13 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchBarController = TextEditingController();
   final HomeBannerListController _homeBannerListController =
-  Get.find<HomeBannerListController>();
+      Get.find<HomeBannerListController>();
 
   @override
   void initState() {
     super.initState();
     _homeBannerListController.getHomeBannerList();
+    Get.find<CategoryListController>().getCategoryList();
   }
 
   @override
@@ -47,16 +50,16 @@ class _HomeScreenState extends State<HomeScreen> {
                 init: _homeBannerListController,
                 builder: (controller) {
                   if (controller.inProgress) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   } else if (controller.errorMessage != null) {
-                    return Center(child: Text('Error: ${controller.errorMessage}'));
+                    return Center(
+                        child: Text('Error: ${controller.errorMessage}'));
                   }
                   return HomeCaroselSlider(
                     bannnerlist: controller.bannerList,
                   );
                 },
               ),
-
               const SizedBox(height: 16),
               HomeSectionHeader(
                 title: 'All Category',
@@ -65,10 +68,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 },
               ),
               const SizedBox(height: 8),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(children: _getCategoryList()),
-              ),
+              GetBuilder<CategoryListController>(builder: (controller) {
+                if (controller.inProgress) {
+                  return const SizedBox(
+                      height: 100,
+                      child: CircularProgressIndicator());
+                }
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child:
+                      Row(children: _getCategoryList(controller.categoryList)),
+                );
+              }),
               HomeSectionHeader(title: 'Popular', onTap: () {}),
               const SizedBox(height: 8),
               SingleChildScrollView(
@@ -96,12 +107,14 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  List<Widget> _getCategoryList() {
+  List<Widget> _getCategoryList(List<CategoryModel> categoryModels) {
     List<Widget> categoryList = [];
-    for (int i = 0; i < 10; i++) {
-      categoryList.add(const Padding(
-        padding: EdgeInsets.only(right: 16),
-        child: CategoryItemWidget(),
+    for (int i = 0; i < categoryModels.length; i++) {
+      categoryList.add(Padding(
+        padding: const EdgeInsets.only(right: 16),
+        child: CategoryItemWidget(
+          categoryModel: categoryModels[i],
+        ),
       ));
     }
     return categoryList;
@@ -126,7 +139,8 @@ class _HomeScreenState extends State<HomeScreen> {
         const SizedBox(width: 6),
         AppBarIconButton(icon: Icons.call, onTap: () {}),
         const SizedBox(width: 6),
-        AppBarIconButton(icon: Icons.notifications_active_rounded, onTap: () {}),
+        AppBarIconButton(
+            icon: Icons.notifications_active_rounded, onTap: () {}),
         const SizedBox(width: 6),
       ],
     );

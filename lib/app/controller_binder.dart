@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:rasel_shop/features/auth/ui/controllers/email_verification_controller.dart';
 import 'package:rasel_shop/features/auth/ui/controllers/read_profile_controller.dart';
 import 'package:rasel_shop/features/common/ui/controllers/auth_controller.dart';
+import 'package:rasel_shop/features/common/ui/controllers/category_list_controller.dart';
 import 'package:rasel_shop/features/common/ui/controllers/main_bottom_nav_controller.dart';
 import 'package:rasel_shop/features/home/ui/controllers/home_banner_list_controller.dart';
 import 'package:rasel_shop/services/network_caller/network_caller.dart';
@@ -18,6 +19,7 @@ class ControllerBinder extends Bindings {
     Get.put(ReadProfileController());
     Get.put(Authcontroller());
     Get.put(HomeBannerListController());
+    Get.put(CategoryListController());
 
   }
 }

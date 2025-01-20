@@ -6,6 +6,9 @@ import 'package:rasel_shop/features/common/ui/controllers/main_bottom_nav_contro
 import 'package:rasel_shop/features/home/ui/screeens/home_screen.dart';
 import 'package:rasel_shop/features/wishlist/ui/screens/wish_list_screen.dart';
 
+import '../../../home/ui/controllers/home_banner_list_controller.dart';
+import '../controllers/category_list_controller.dart';
+
 class MainBottomNavScreen extends StatefulWidget {
   const MainBottomNavScreen({super.key});
   static const String name  = '/bottom-nav-screen';
@@ -15,6 +18,9 @@ class MainBottomNavScreen extends StatefulWidget {
 }
 
 class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
+  final HomeBannerListController _homeBannerListController =
+  Get.find<HomeBannerListController>();
+
   final List<Widget> _screens = const [
 
      HomeScreen(),
@@ -22,6 +28,12 @@ class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
     CartListScreen(),
     WishListScreen(),
   ];
+  @override
+  void initState() {
+    super.initState();
+    _homeBannerListController.getHomeBannerList();
+    Get.find<CategoryListController>().getCategoryList();
+  }
 
   @override
   Widget build(BuildContext context) {
