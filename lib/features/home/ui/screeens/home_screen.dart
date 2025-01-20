@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:rasel_shop/app/assets_path.dart';
 import 'package:rasel_shop/features/common/ui/widgets/product_iteam_widget.dart';
+import 'package:rasel_shop/features/home/ui/controllers/home_banner_list_controller.dart';
 import 'package:rasel_shop/features/home/ui/widgets/search_bar.dart';
 import '../../../common/ui/controllers/main_bottom_nav_controller.dart';
 import '../widgets/app_bar_icon_button.dart';
@@ -21,6 +22,15 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final TextEditingController _searchBarController = TextEditingController();
+  final HomeBannerListController _homeBannerListController =
+  Get.find<HomeBannerListController>();
+
+  @override
+  void initState() {
+    super.initState();
+    _homeBannerListController.getHomeBannerList();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,77 +40,55 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Column(
             children: [
-              const SizedBox(
-                height: 5,
-              ),
+              const SizedBox(height: 5),
               ProductSearchBar(controller: _searchBarController),
-              const SizedBox(
-                height: 16,
+              const SizedBox(height: 16),
+              GetBuilder<HomeBannerListController>(
+                init: _homeBannerListController,
+                builder: (controller) {
+                  if (controller.inProgress) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (controller.errorMessage != null) {
+                    return Center(child: Text('Error: ${controller.errorMessage}'));
+                  }
+                  return HomeCaroselSlider(
+                    bannnerlist: controller.bannerList,
+                  );
+                },
               ),
-              const HomeCaroselSlider(),
-              const SizedBox(
-                height: 16,
-              ),
+
+              const SizedBox(height: 16),
               HomeSectionHeader(
                 title: 'All Category',
                 onTap: () {
                   Get.find<MainBottomNavController>().moveToCategory();
                 },
               ),
-              const SizedBox(
-                height: 8,
-              ),
+              const SizedBox(height: 8),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: _getCategoryList(),
-                ),
+                child: Row(children: _getCategoryList()),
               ),
-              HomeSectionHeader(
-                title: 'Popular',
-                onTap: () {},
-              ),
-              const SizedBox(
-                height: 8,
-              ),
+              HomeSectionHeader(title: 'Popular', onTap: () {}),
+              const SizedBox(height: 8),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: _getProductlist(),
-                ),
+                child: Row(children: _getProductlist()),
               ),
-              const SizedBox(
-                height: 16,
-              ),
-              HomeSectionHeader(
-                title: 'Special',
-                onTap: () {},
-              ),
-              const SizedBox(
-                height: 8,
-              ),
+              const SizedBox(height: 16),
+              HomeSectionHeader(title: 'Special', onTap: () {}),
+              const SizedBox(height: 8),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: _getProductlist(),
-                ),
+                child: Row(children: _getProductlist()),
               ),
-              HomeSectionHeader(
-                title: 'New',
-                onTap: () {},
-              ),
-              const SizedBox(
-                height: 8,
-              ),
+              HomeSectionHeader(title: 'New', onTap: () {}),
+              const SizedBox(height: 8),
               SingleChildScrollView(
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: _getProductlist(),
-                ),
+                child: Row(children: _getProductlist()),
               ),
-              const SizedBox(
-                height: 8,
-              ),
+              const SizedBox(height: 8),
             ],
           ),
         ),
@@ -134,27 +122,12 @@ class _HomeScreenState extends State<HomeScreen> {
     return AppBar(
       title: SvgPicture.asset(AssetesPath.navBarApplogo),
       actions: [
-        AppBarIconButton(
-          icon: Icons.account_circle,
-          onTap: () {},
-        ),
-        const SizedBox(
-          width: 6,
-        ),
-        AppBarIconButton(
-          icon: Icons.call,
-          onTap: () {},
-        ),
-        const SizedBox(
-          width: 6,
-        ),
-        AppBarIconButton(
-          icon: Icons.notifications_active_rounded,
-          onTap: () {},
-        ),
-        const SizedBox(
-          width: 6,
-        ),
+        AppBarIconButton(icon: Icons.account_circle, onTap: () {}),
+        const SizedBox(width: 6),
+        AppBarIconButton(icon: Icons.call, onTap: () {}),
+        const SizedBox(width: 6),
+        AppBarIconButton(icon: Icons.notifications_active_rounded, onTap: () {}),
+        const SizedBox(width: 6),
       ],
     );
   }

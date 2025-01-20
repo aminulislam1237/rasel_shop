@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:rasel_shop/features/auth/ui/screeens/email_varification_screen.dart';
 import 'package:rasel_shop/features/common/ui/screens/main_bottom_nav_screen.dart';
-import 'package:rasel_shop/features/home/ui/screeens/home_screen.dart';
 import '../widgets/app_icon_widget.dart';
-//import 'email_varification_screen.dart';
+
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

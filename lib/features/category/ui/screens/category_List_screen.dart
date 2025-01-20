@@ -16,7 +16,7 @@ class CategoryListScreen extends StatelessWidget {
       child: Scaffold(
         appBar: AppBar(
           title: const Text('Category List'),
-          leading:  IconButton(onPressed: _onPop, icon: Icon(Icons.arrow_back_ios),),
+          leading:  IconButton(onPressed: _onPop, icon: const Icon(Icons.arrow_back_ios),),
         ),
         body: GridView.builder(
           itemCount: 20,

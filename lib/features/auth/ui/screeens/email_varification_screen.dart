@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:rasel_shop/features/auth/ui/controllers/email_verification_controller.dart';
 import 'package:rasel_shop/features/auth/ui/screeens/otp_verification_screen.dart';
 import 'package:rasel_shop/features/auth/ui/widgets/app_icon_widget.dart';
+import 'package:rasel_shop/features/common/ui/widgets/center_circular_progress_indicator.dart';
+import 'package:rasel_shop/features/common/ui/widgets/snack_bar_message.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
   const EmailVerificationScreen({super.key});
@@ -15,13 +19,25 @@ class EmailVerificationScreen extends StatefulWidget {
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   final TextEditingController _emailTEController = TextEditingController();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final EmailVerificationController _emailVerificationController =
+      Get.find<EmailVerificationController>();
 
-  void _submitForm() {
+  void _onTapNextButton() async {
     if (_formKey.currentState!.validate()) {
-      // Handle the email submission
-      final email = _emailTEController.text;
-      Navigator.pushNamed(context, OtpVerificationScreen.name);
-      print('Email submitted: $email');
+      bool isSuccess = await _emailVerificationController
+          .verifyEmail(_emailTEController.text.trim());
+
+      if (isSuccess) {
+        if (mounted) {
+          Navigator.pushNamed(context, OtpVerificationScreen.name,
+              arguments: _emailTEController.text.trim());
+        }
+      } else {
+        if (mounted) {
+          showSnackBarMessage(
+              context, _emailVerificationController.errorMessage!);
+        }
+      }
     }
   }
 
@@ -36,25 +52,28 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
             key: _formKey,
             child: Column(
               children: [
-                const SizedBox(height: 80),
+                const SizedBox(height: 50),
                 const ApplogoWidget(),
-                const SizedBox(height: 16),
+                const SizedBox(height: 8),
                 Text(
                   'Welcome Back',
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                const SizedBox(
+                  height: 10,
                 ),
                 Text(
                   'Please enter your email address',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Colors.grey,
-                  ),
+                        color: Colors.grey,
+                      ),
                 ),
                 const SizedBox(height: 24),
                 TextFormField(
                   autovalidateMode: AutovalidateMode.onUserInteraction,
                   controller: _emailTEController,
                   decoration: const InputDecoration(hintText: 'Email Address'),
-                  validator: (String?value) {
+                  validator: (String? value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email address';
                     }
@@ -67,10 +86,15 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                   },
                 ),
                 const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: _submitForm,
-                  child: const Text('Next'),
-                ),
+                GetBuilder<EmailVerificationController>(builder: (controller) {
+                  if (controller.inProgress) {
+                    return const CenteredCirularProgressIndicator();
+                  }
+                  return ElevatedButton(
+                    onPressed: _onTapNextButton,
+                    child: const Text('Next'),
+                  );
+                }),
               ],
             ),
           ),

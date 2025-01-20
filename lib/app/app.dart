@@ -26,35 +26,27 @@ class Craftybay extends StatelessWidget {
       onGenerateRoute: (RouteSettings settings) {
         late Widget widget;
 
-        switch (settings.name) {
-          case SplashScreen.name:
-            widget = const SplashScreen();
-            break;
-          case EmailVerificationScreen.name:
-            widget = const EmailVerificationScreen();
-            break;
-          case OtpVerificationScreen.name:
-            widget = const OtpVerificationScreen();
-            break;
-          case CompleteProfileScreen.name:
-            widget = const CompleteProfileScreen();
-            break;
-          case MainBottomNavScreen.name:
-            widget = const MainBottomNavScreen();
-            break;
-          case CategoryListScreen.name:
-            widget = const CategoryListScreen();
-            break;
-          case ProductListScreen.name:
-            String name = settings.arguments as String;
-            widget = ProductListScreen(categoryName: name);
-            break;
-          case ProductDetailsScreen.name:
-            int  productId = settings.arguments as int;
-            widget = ProductDetailsScreen(productId: productId);
-            break;
-          default:
-            widget = const SplashScreen(); // Fallback for unknown routes
+        if (settings.name == SplashScreen.name) {
+          widget = const SplashScreen();
+        } else if (settings.name == EmailVerificationScreen.name) {
+          widget = const EmailVerificationScreen();
+        } else if (settings.name == OtpVerificationScreen.name) {
+          String email = settings.arguments as String;
+          widget = OtpVerificationScreen(email: email);
+        } else if (settings.name == CompleteProfileScreen.name) {
+          widget = const CompleteProfileScreen();
+        } else if (settings.name == MainBottomNavScreen.name) {
+          widget = const MainBottomNavScreen();
+        } else if (settings.name == CategoryListScreen.name) {
+          widget = const CategoryListScreen();
+        } else if (settings.name == ProductListScreen.name) {
+          String name = settings.arguments as String;
+          widget = ProductListScreen(categoryName: name);
+        } else if (settings.name == ProductDetailsScreen.name) {
+          int productId = settings.arguments as int;
+          widget = ProductDetailsScreen(productId: productId);
+        } else {
+          widget = const SplashScreen(); // Fallback for unknown routes
         }
 
         return MaterialPageRoute(builder: (ctx) => widget);

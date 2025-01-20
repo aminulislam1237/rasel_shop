@@ -32,7 +32,7 @@ class ProductItemWidget extends StatelessWidget {
                 ),
                 child: Image.asset(
                   'assets/images/large_6943.jpg', // Changed to forward slashes
-                  width: 140,
+                  width: 120,
                   height: 80,
                   fit: BoxFit.cover, // Added fit property
                 ),

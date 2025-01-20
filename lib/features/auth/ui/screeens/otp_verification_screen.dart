@@ -4,14 +4,20 @@ import 'package:get/get.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:rasel_shop/app/app_colors.dart';
 import 'package:rasel_shop/app/app_constants.dart';
+import 'package:rasel_shop/features/auth/ui/controllers/otp_verification_controller.dart';
+import 'package:rasel_shop/features/auth/ui/controllers/read_profile_controller.dart';
 import 'package:rasel_shop/features/auth/ui/widgets/app_icon_widget.dart';
+import 'package:rasel_shop/features/common/ui/screens/main_bottom_nav_screen.dart';
+import 'package:rasel_shop/features/common/ui/widgets/center_circular_progress_indicator.dart';
+import 'package:rasel_shop/features/common/ui/widgets/snack_bar_message.dart';
 
 import 'complete_profile_screen.dart';
 
 class OtpVerificationScreen extends StatefulWidget {
-  const OtpVerificationScreen({super.key});
+  const OtpVerificationScreen({super.key, required this.email});
 
   static const String name = '/Otp-verification';
+  final String email;
 
   @override
   State<OtpVerificationScreen> createState() => _OtpVerificationScreenState();
@@ -23,6 +29,8 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
   final RxInt _remainingTime = AppConstants.resendOtpInsecs.obs;
   late Timer _timer;
   final RxBool _enabledResendCodeButton = false.obs;
+  final OtpVerificationController _otpVerificationController =
+      Get.find<OtpVerificationController>();
 
   @override
   void initState() {
@@ -43,12 +51,28 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
     });
   }
 
-  void _submitForm() {
-
-   // if (_formKey.currentState!.validate()) {
-      // Handle OTP submission logic here
-   Navigator.pushNamed(context, CompleteProfileScreen.name);
-   // }
+  Future<void> _onTapNext() async {
+    if (_formKey.currentState!.validate()) {
+      final bool response = await _otpVerificationController.verifyotp(
+          widget.email, _otpTEController.text);
+      if (response) {
+        if (_otpVerificationController.shouldNavigateCompleteProfile) {
+          if (mounted) {
+            Navigator.pushNamed(context, CompleteProfileScreen.name);
+          } else {
+            if (mounted) {
+              Navigator.pushNamedAndRemoveUntil(
+                  context, MainBottomNavScreen.name, (predicate) => false);
+            }
+          }
+        }
+      } else {
+        if (mounted) {
+          showSnackBarMessage(
+              context, _otpVerificationController.errorMessage!);
+        }
+      }
+    }
   }
 
   @override
@@ -74,13 +98,14 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                 const SizedBox(height: 16),
                 Text(
                   'Enter OTP Code',
-                  style: Theme.of(context).textTheme.titleLarge,
+                  style: Theme.of(context).textTheme.headlineMedium,
                 ),
+                const SizedBox(height: 10),
                 Text(
                   'A 4 Digit Code has been sent',
                   style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: Colors.grey,
-                  ),
+                        color: Colors.grey,
+                      ),
                 ),
                 const SizedBox(height: 24),
                 PinCodeTextField(
@@ -105,37 +130,43 @@ class _OtpVerificationScreenState extends State<OtpVerificationScreen> {
                   },
                 ),
                 const SizedBox(height: 16),
-                ElevatedButton(
-                  onPressed: _submitForm,
-                  child: const Text('Next'),
-                ),
+                GetBuilder<OtpVerificationController>(builder: (controller) {
+                  if (controller.inProgress) {
+                    return const CenteredCirularProgressIndicator();
+                  }
+                  return ElevatedButton(
+                    onPressed: _onTapNext,
+                    child: const Text('Next'),
+                  );
+                }),
                 const SizedBox(height: 24),
                 Obx(() => Visibility(
-                  visible: !_enabledResendCodeButton.value,
-                  child: RichText(
-                    text: TextSpan(
-                      text: 'This code will expire in ',
-                      style: const TextStyle(color: Colors.grey),
-                      children: [
-                        TextSpan(
-                          text: '${_remainingTime.value}s',
-                          style: const TextStyle(color: Colors.cyanAccent),
+                      visible: !_enabledResendCodeButton.value,
+                      child: RichText(
+                        text: TextSpan(
+                          text: 'This code will expire in ',
+                          style: const TextStyle(color: Colors.grey),
+                          children: [
+                            TextSpan(
+                              text: '${_remainingTime.value}s',
+                              style: const TextStyle(color: Colors.cyanAccent),
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
-                  ),
-                )),
+                      ),
+                    )),
                 Obx(() => Visibility(
-                  visible: _enabledResendCodeButton.value,
-                  child: TextButton(
-                    onPressed: () {
-                      // Resend code logic here
-                      _remainingTime.value = AppConstants.resendOtpInsecs; // Reset timer
-                      _startResendCodeTimer(); // Restart timer
-                    },
-                    child: const Text('Resend Code'),
-                  ),
-                )),
+                      visible: _enabledResendCodeButton.value,
+                      child: TextButton(
+                        onPressed: () {
+                          // Resend code logic here
+                          _remainingTime.value =
+                              AppConstants.resendOtpInsecs; // Reset timer
+                          _startResendCodeTimer(); // Restart timer
+                        },
+                        child: const Text('Resend Code'),
+                      ),
+                    )),
               ],
             ),
           ),
