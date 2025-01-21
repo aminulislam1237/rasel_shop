@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:rasel_shop/features/common/data/models/product_model.dart';
 import 'package:rasel_shop/features/product/ui/screens/product_details_screen.dart';
 import '../../../../app/app_colors.dart';
 
 class ProductItemWidget extends StatelessWidget {
   const ProductItemWidget({
-    super.key,
+    super.key, required this.productModel,
   });
+
+  final product_model productModel;
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +25,6 @@ class ProductItemWidget extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                padding: const EdgeInsets.all(16.0),
                 decoration: BoxDecoration(
                   color: Appcolors.themeColor.withOpacity(0.12),
                   borderRadius: const BorderRadius.only(
@@ -30,10 +32,9 @@ class ProductItemWidget extends StatelessWidget {
                     topRight: Radius.circular(16),
                   ),
                 ),
-                child: Image.asset(
-                  'assets/images/large_6943.jpg', // Changed to forward slashes
+                child: Image.network(
+                  productModel.image??'', // Changed to forward slashes
                   width: 120,
-                  height: 80,
                   fit: BoxFit.cover, // Added fit property
                 ),
               ),
@@ -41,10 +42,10 @@ class ProductItemWidget extends StatelessWidget {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    const Text(
-                      'Branded shoe-lasted-22fh',
+                     Text(
+                      productModel.title??'',
                       maxLines: 1,
-                      style: TextStyle(
+                      style: const TextStyle(
                         overflow: TextOverflow.ellipsis,
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
@@ -57,23 +58,23 @@ class ProductItemWidget extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
-                          '\$100',
-                          style: TextStyle(
+                         Text(
+                          '\$${productModel.price??''}',
+                          style: const TextStyle(
                             fontWeight: FontWeight.w600,
                             color: Appcolors.themeColor,
                           ),
                         ),
-                        const Wrap(
+                         Wrap(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.star,
                               color: Colors.amber,
                               size: 18,
                             ),
                             Text(
-                              '4.5',
-                              style: TextStyle(
+                              '${productModel.star??'0.0'}',
+                              style: const TextStyle(
                                 fontWeight: FontWeight.w600,
                                 color: Appcolors.themeColor,
                               ),
@@ -81,12 +82,12 @@ class ProductItemWidget extends StatelessWidget {
                           ],
                         ),
                         Container(
-                          padding: EdgeInsets.all(4),
+                          padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
                             color: Appcolors.themeColor,
                             borderRadius: BorderRadius.circular(4),
                           ),
-                          child: Icon(
+                          child: const Icon(
                             Icons.favorite_border,
                             size: 14,
                             color: Colors.white,
