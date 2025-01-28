@@ -8,7 +8,7 @@ class ProductItemWidget extends StatelessWidget {
     super.key, required this.productModel,
   });
 
-  final product_model productModel;
+  final ProductModel productModel;
 
   @override
   Widget build(BuildContext context) {

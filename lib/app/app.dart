@@ -10,7 +10,6 @@ import 'package:rasel_shop/features/category/ui/screens/category_list_screen.dar
 import 'package:rasel_shop/features/common/ui/screens/main_bottom_nav_screen.dart';
 import 'package:rasel_shop/features/product/ui/screens/product_details_screen.dart';
 import 'package:rasel_shop/features/product/ui/screens/product_list_screen.dart';
-import 'package:rasel_shop/features/wishlist/ui/screens/wish_list_screen.dart';
 
 class Craftybay extends StatelessWidget {
   const Craftybay({super.key});
@@ -40,8 +39,12 @@ class Craftybay extends StatelessWidget {
         } else if (settings.name == CategoryListScreen.name) {
           widget = const CategoryListScreen();
         } else if (settings.name == ProductListScreen.name) {
-          String name = settings.arguments as String;
-          widget = ProductListScreen(categoryName: name);
+          Map<String, dynamic> args =
+              settings.arguments as Map<String, dynamic>;
+          widget = ProductListScreen(
+            categoryName: args['categoryName'],
+            categoryId: args['categoryId'],
+          );
         } else if (settings.name == ProductDetailsScreen.name) {
           int productId = settings.arguments as int;
           widget = ProductDetailsScreen(productId: productId);

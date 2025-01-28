@@ -9,11 +9,12 @@ class CategoryListModel {
   factory CategoryListModel.fromJson(Map<String, dynamic> json) {
     return CategoryListModel(
       msg: json['msg'],
-      categoryList: json['data'] != null
-          ? (json['data'] as List).map((v) => CategoryModel.fromJson(v)).toList()
-          : null,
+      categoryList: (json['data'] as List?)?.map((v) {
+        return CategoryModel.fromJson(v as Map<String, dynamic>);
+      }).toList() ?? [], // ✅ Ensure categoryList is never null
     );
   }
+
 
   // Method to convert the object back to JSON
   Map<String, dynamic> toJson() {

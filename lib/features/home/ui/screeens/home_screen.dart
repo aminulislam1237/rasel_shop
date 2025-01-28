@@ -7,7 +7,7 @@ import 'package:rasel_shop/features/common/data/models/product_model.dart';
 import 'package:rasel_shop/features/common/ui/controllers/category_list_controller.dart';
 import 'package:rasel_shop/features/common/ui/widgets/product_iteam_widget.dart';
 import 'package:rasel_shop/features/home/ui/controllers/home_banner_list_controller.dart';
-import 'package:rasel_shop/features/home/ui/controllers/product_list_controller.dart';
+import 'package:rasel_shop/features/home/ui/controllers/popular_product_list_controller.dart';
 import 'package:rasel_shop/features/home/ui/widgets/search_bar.dart';
 import '../../../common/ui/controllers/main_bottom_nav_controller.dart';
 import '../widgets/app_bar_icon_button.dart';
@@ -83,20 +83,19 @@ class _HomeScreenState extends State<HomeScreen> {
               }),
               HomeSectionHeader(title: 'Popular', onTap: () {}),
               const SizedBox(height: 8),
-              GetBuilder<ProductListByRemarkController>(
-                builder: (controller) {
-                  if (controller.inProgress) {
-                    return const SizedBox(
-                        height: 200, child: CircularProgressIndicator());
-                  }
-                  return SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: Row(children: _getProductlist(
-                      controller.productList,
-                    )),
-                  );
+              GetBuilder<PopularProductListController>(builder: (controller) {
+                if (controller.inProgress) {
+                  return const SizedBox(
+                      height: 200, child: CircularProgressIndicator());
                 }
-              ),
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                      children: _getProductlist(
+                    controller.productList,
+                  )),
+                );
+              }),
               const SizedBox(height: 16),
               HomeSectionHeader(title: 'Special', onTap: () {}),
               const SizedBox(height: 8),
@@ -131,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return categoryList;
   }
 
-  List<Widget> _getProductlist( List<product_model> productList ) {
+  List<Widget> _getProductlist(List<ProductModel> productList) {
     List<Widget> list = [];
     for (int i = 0; i < productList.length; i++) {
       list.add(Padding(

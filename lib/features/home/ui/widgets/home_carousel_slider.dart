@@ -109,7 +109,7 @@ class _HomeCaroselSliderState extends State<HomeCaroselSlider> {
                 margin: const EdgeInsets.symmetric(horizontal: 2),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  color: i == value ? Colors.blue : Colors.grey,
+                  color: i == value ? Appcolors.themeColor : Colors.grey,
                 ),
               ),
           ],

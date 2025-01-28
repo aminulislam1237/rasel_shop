@@ -4,8 +4,12 @@ import 'package:rasel_shop/features/auth/ui/controllers/read_profile_controller.
 import 'package:rasel_shop/features/common/ui/controllers/auth_controller.dart';
 import 'package:rasel_shop/features/common/ui/controllers/category_list_controller.dart';
 import 'package:rasel_shop/features/common/ui/controllers/main_bottom_nav_controller.dart';
+import 'package:rasel_shop/features/common/ui/controllers/product_list_controller.dart';
+import 'package:rasel_shop/features/home/ui/controllers/Product_list_by_remark_controller.dart';
+import 'package:rasel_shop/features/home/ui/controllers/Special_product_list_controller.dart';
 import 'package:rasel_shop/features/home/ui/controllers/home_banner_list_controller.dart';
-import 'package:rasel_shop/features/home/ui/controllers/product_list_controller.dart';
+import 'package:rasel_shop/features/home/ui/controllers/popular_product_list_controller.dart';
+import 'package:rasel_shop/features/product/ui/controller/product_details_controller.dart';
 import 'package:rasel_shop/services/network_caller/network_caller.dart';
 
 import '../features/auth/ui/controllers/otp_verification_controller.dart';
@@ -22,5 +26,9 @@ class ControllerBinder extends Bindings {
     Get.put(HomeBannerListController());
     Get.put(CategoryListController());
     Get.put(ProductListByRemarkController());
+    Get.put(PopularProductListController());
+    Get.put(ProductListController());
+    Get.put(SpecialProductListController());
+    Get.put(ProductDetailsController());
   }
 }

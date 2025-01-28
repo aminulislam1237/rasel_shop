@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:rasel_shop/features/cart/ui/screens/cart_list_screen.dart';
 import 'package:rasel_shop/features/category/ui/screens/category_List_screen.dart';
 import 'package:rasel_shop/features/common/ui/controllers/main_bottom_nav_controller.dart';
-import 'package:rasel_shop/features/home/ui/controllers/product_list_controller.dart';
+import 'package:rasel_shop/features/home/ui/controllers/popular_product_list_controller.dart';
 import 'package:rasel_shop/features/home/ui/screeens/home_screen.dart';
 import 'package:rasel_shop/features/wishlist/ui/screens/wish_list_screen.dart';
 
@@ -33,7 +33,7 @@ class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
     super.initState();
     _homeBannerListController.getHomeBannerList();
     Get.find<CategoryListController>().getCategoryList();
-    Get.find<ProductListByRemarkController>().getProductList();
+    Get.find<PopularProductListController>().getProductList();
   }
 
   @override

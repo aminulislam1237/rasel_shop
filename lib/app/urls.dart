@@ -10,4 +10,10 @@ class Urls {
   static String categoryListUrl = '$_baseUrl/CategoryList';
   static String productLisbyRemarktUrl(String remark) =>
       '$_baseUrl/ListProductByRemark/$remark';
+
+  static String productLisbyCategoryUrl(int categoryId) =>
+      '$_baseUrl/ListProductByCategory/$categoryId';
+
+  static String productDetaitls(int productId) =>
+      '$_baseUrl/ProductDetailsById/$productId';
 }

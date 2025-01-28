@@ -6,10 +6,14 @@ import 'package:rasel_shop/app/app_colors.dart';
 class ProductImageCaroselSlider extends StatefulWidget {
   const ProductImageCaroselSlider({
     super.key,
+    required this.imageUrls,
   });
 
+  final List<String> imageUrls;
+
   @override
-  State<ProductImageCaroselSlider> createState() => _ProductImageCaroselSliderState();
+  State<ProductImageCaroselSlider> createState() =>
+      _ProductImageCaroselSliderState();
 }
 
 class _ProductImageCaroselSliderState extends State<ProductImageCaroselSlider> {
@@ -25,19 +29,16 @@ class _ProductImageCaroselSliderState extends State<ProductImageCaroselSlider> {
               onPageChanged: (currentIndex, reason) {
                 _selectedIndex.value = currentIndex;
               }),
-          items: [1, 2, 3, 4, 5].map((i) {
+          items: widget.imageUrls.map((url) {
             return Builder(
               builder: (BuildContext context) {
                 return Container(
-                    width: MediaQuery.of(context).size.width,
-                    decoration: BoxDecoration(
-                        color: Colors.black12,
-                        ),
-                    alignment: Alignment.center,
-                    child: Text(
-                      'text $i',
-                      style: const TextStyle(fontSize: 16.0),
-                    ));
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                      color: Colors.black12,
+                      image: DecorationImage(image: NetworkImage(url))),
+                  alignment: Alignment.center,
+                );
               },
             );
           }).toList(),
@@ -52,7 +53,7 @@ class _ProductImageCaroselSliderState extends State<ProductImageCaroselSlider> {
                 return Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    for (int i = 0; i < 5; i++)
+                    for (int i = 0; i < widget.imageUrls.length; i++)
                       Container(
                         width: 16,
                         height: 16,
