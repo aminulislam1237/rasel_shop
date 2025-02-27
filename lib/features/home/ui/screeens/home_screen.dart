@@ -10,6 +10,7 @@ import 'package:rasel_shop/features/home/ui/controllers/home_banner_list_control
 import 'package:rasel_shop/features/home/ui/controllers/popular_product_list_controller.dart';
 import 'package:rasel_shop/features/home/ui/widgets/search_bar.dart';
 import '../../../common/ui/controllers/main_bottom_nav_controller.dart';
+import '../controllers/Special_product_list_controller.dart';
 import '../widgets/app_bar_icon_button.dart';
 import '../../../common/ui/widgets/category_item_widget.dart';
 import '../widgets/home_carousel_slider.dart';
@@ -86,7 +87,7 @@ class _HomeScreenState extends State<HomeScreen> {
               GetBuilder<PopularProductListController>(builder: (controller) {
                 if (controller.inProgress) {
                   return const SizedBox(
-                      height: 200, child: CircularProgressIndicator());
+                      height: 50, child: CircularProgressIndicator());
                 }
                 return SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -99,16 +100,28 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 16),
               HomeSectionHeader(title: 'Special', onTap: () {}),
               const SizedBox(height: 8),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(children: _getProductlist([])),
-              ),
+              GetBuilder<SpecialProductListController>(builder: (controller) {
+                if (controller.inProgress) {
+                  return const SizedBox(
+                      height: 50, child: CircularProgressIndicator());
+                }
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                      children: _getProductlist(
+                    controller.productList,
+                  )),
+                );
+              }),
               HomeSectionHeader(title: 'New', onTap: () {}),
               const SizedBox(height: 8),
-              SingleChildScrollView(
-                scrollDirection: Axis.horizontal,
-                child: Row(children: _getProductlist([])),
-              ),
+              GetBuilder<SpecialProductListController>(builder: (controller) {
+
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(children: _getProductlist(controller.productList)),
+                );
+              }),
               const SizedBox(height: 8),
             ],
           ),
