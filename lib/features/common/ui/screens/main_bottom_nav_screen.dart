@@ -1,18 +1,18 @@
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:rasel_shop/features/cart/ui/screens/cart_list_screen.dart';
-import 'package:rasel_shop/features/category/ui/screens/category_List_screen.dart';
-import 'package:rasel_shop/features/common/ui/controllers/main_bottom_nav_controller.dart';
-import 'package:rasel_shop/features/home/ui/controllers/Special_product_list_controller.dart';
-import 'package:rasel_shop/features/home/ui/controllers/popular_product_list_controller.dart';
-import 'package:rasel_shop/features/home/ui/screeens/home_screen.dart';
-import 'package:rasel_shop/features/wishlist/ui/screens/wish_list_screen.dart';
 
-import '../../../home/ui/controllers/home_banner_list_controller.dart';
+import '../../../cart/ui/screens/cart_list_screen.dart';
+import '../../../category/ui/screens/category_List_screen.dart';
+import '../../../home/ui/controllers/popular_product_list_controller.dart';
+import '../../../home/ui/screeens/home_screen.dart';
+import '../../../wishlist/ui/screens/wish_list_screen.dart';
 import '../controllers/category_list_controller.dart';
+import '../controllers/main_bottom_nav_controller.dart';
 
 class MainBottomNavScreen extends StatefulWidget {
   const MainBottomNavScreen({super.key});
+
   static const String name = '/bottom-nav-screen';
 
   @override
@@ -20,23 +20,19 @@ class MainBottomNavScreen extends StatefulWidget {
 }
 
 class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
-  final HomeBannerListController _homeBannerListController =
-      Get.find<HomeBannerListController>();
-
   final List<Widget> _screens = const [
     HomeScreen(),
     CategoryListScreen(),
     CartListScreen(),
     WishListScreen(),
   ];
+
   @override
   void initState() {
     super.initState();
-    _homeBannerListController.getHomeBannerList();
+    //Get.find<SliderListController>().getSliders();
     Get.find<CategoryListController>().getCategoryList();
     Get.find<PopularProductListController>().getProductList();
-    Get.find<SpecialProductListController>().getProductList();
-
   }
 
   @override
@@ -45,17 +41,18 @@ class _MainBottomNavScreenState extends State<MainBottomNavScreen> {
       return Scaffold(
         body: _screens[bottomNavController.selectedIndex],
         bottomNavigationBar: NavigationBar(
-            selectedIndex: bottomNavController.selectedIndex,
-            onDestinationSelected: bottomNavController.changeIndex,
-            destinations: const [
-              NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-              NavigationDestination(
-                  icon: Icon(Icons.category), label: 'Categories'),
-              NavigationDestination(
-                  icon: Icon(Icons.shopping_cart), label: 'Cart'),
-              NavigationDestination(
-                  icon: Icon(Icons.favorite_border), label: 'Wishlist')
-            ]),
+          selectedIndex: bottomNavController.selectedIndex,
+          onDestinationSelected: bottomNavController.changeIndex,
+          destinations: const [
+            NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
+            NavigationDestination(
+                icon: Icon(Icons.category), label: 'Categories'),
+            NavigationDestination(
+                icon: Icon(Icons.shopping_cart), label: 'Cart'),
+            NavigationDestination(
+                icon: Icon(Icons.favorite_border), label: 'Wishlist'),
+          ],
+        ),
       );
     });
   }

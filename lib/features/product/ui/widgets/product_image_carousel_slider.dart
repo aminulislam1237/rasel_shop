@@ -61,7 +61,7 @@ class _ProductImageCaroselSliderState extends State<ProductImageCaroselSlider> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20),
                             color: value == i
-                                ? Appcolors.themeColor
+                                ? AppColors.themeColor
                                 : Colors.white,
                             border: Border.all(color: Colors.grey.shade300)),
                       )

@@ -1,41 +1,70 @@
 
 import 'package:get/get.dart';
-import 'package:rasel_shop/features/common/data/models/category_model.dart';
-import 'package:rasel_shop/services/network_caller/network_caller.dart';
+
 import '../../../../app/urls.dart';
-import '../../data/models/category_list_model.dart';
+import '../../../../services/network_caller/network_caller.dart';
+import '../../data&model/Category/category_pagination_model.dart';
 
 class CategoryListController extends GetxController {
   bool _inProgress = false;
-  CategoryListModel? _categoryListModel;
-  String? _errorMessage;
 
   bool get inProgress => _inProgress;
-  List<CategoryModel> get categoryList => _categoryListModel?.categoryList??[];
 
+  bool get initialInProgress => _page == 1 && inProgress;
+
+  final List<CategoryItemModel> _categoryList = [];
+
+  List<CategoryItemModel> get categoryList => _categoryList;
+
+  String? _errorMessage;
 
   String? get errorMessage => _errorMessage;
 
-  Future<bool> getCategoryList() async {
-    _inProgress = true; // Start loading
-    update(); // Notify UI
+  final int _count = 30;
 
-    // Make network request
-    final NetworkResponse response = await Get.find<NetworkCaller>().getRequest(Urls.categoryListUrl);
+  int _page = 0;
+
+  int? _lastPage;
+
+  Future<bool> getCategoryList() async {
+    _page++;
+
+    if (_lastPage != null && _page > _lastPage!) return false;
+
+    bool isSuccess = false;
+    _inProgress = true;
+    update();
+
+    Map<String, dynamic> queryParams = {
+      'count': _count,
+      'page': _page,
+    };
+
+    final NetworkResponse response = await Get.find<NetworkCaller>().getRequest(
+      Urls.categoryListUrl,
+      queryParams: queryParams,
+    );
 
     if (response.isSuccess) {
-      // Parse response data
-      _categoryListModel = CategoryListModel.fromJson(response.responsedata);
-      _errorMessage = null;
-      _inProgress = false; // Stop loading
-      update(); // Notify UI
-      return true; // Success
+      CategoryPaginationModel paginationModel =
+      CategoryPaginationModel.fromJson(response.responseData);
+      _categoryList.addAll(paginationModel.data?.results ?? []);
+      if (paginationModel.data?.lastPage != null) {
+        _lastPage = paginationModel.data!.lastPage!;
+      }
+      isSuccess = true;
     } else {
-      // Handle error
-      _errorMessage = response.errorMessage; // Set error message
-      _inProgress = false; // Stop loading
-      update(); // Notify UI
-      return false; // Failure
+      _errorMessage = response.errorMessage;
     }
+    _inProgress = false;
+    update();
+    return isSuccess;
+  }
+
+  Future<bool> refreshCategoryList() async {
+    _page = 0;
+    _lastPage = null;
+    _categoryList.clear();
+    return getCategoryList();
   }
 }

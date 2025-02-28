@@ -1,4 +1,5 @@
-import 'package:rasel_shop/features/common/data/models/product_model.dart';
+
+import 'package:rasel_shop/features/common/data&model/product_model.dart';
 
 class ProductListModel {
   String? msg;

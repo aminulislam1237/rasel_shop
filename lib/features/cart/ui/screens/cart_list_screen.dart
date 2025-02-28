@@ -46,7 +46,7 @@ class _CartListScreenState extends State<CartListScreen> {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Appcolors.themeColor.withOpacity(0.15),
+        color: AppColors.themeColor.withOpacity(0.15),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,7 +61,7 @@ class _CartListScreenState extends State<CartListScreen> {
               const Text(
                 '\$100111',
                 style: TextStyle(
-                  color: Appcolors.themeColor,
+                  color: AppColors.themeColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 18,
                 ),

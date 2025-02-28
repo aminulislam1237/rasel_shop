@@ -2,16 +2,18 @@ import 'dart:convert';
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 
+import '../../features/common/data&model/error_response_model.dart';
+
 class NetworkResponse {
   final bool isSuccess;
   final int statusCode;
-  final dynamic responsedata;
+  final dynamic responseData;
   final String errorMessage;
 
   NetworkResponse({
     required this.isSuccess,
     required this.statusCode,
-    required this.responsedata,
+    this.responseData,
     this.errorMessage = 'Something went wrong',
   });
 }
@@ -19,45 +21,38 @@ class NetworkResponse {
 class NetworkCaller {
   final Logger _logger = Logger();
 
-  Future<NetworkResponse> getRequest(String url,{String? accessToken}) async {
+  Future<NetworkResponse> getRequest(String url, {Map<String, dynamic>? queryParams, String? accessToken}) async {
     try {
-      Uri uri = Uri.parse(url);
-      Map<String,String> headers = {
+      Map<String, String> headers = {
         'content-type': 'application/json',
       };
-      if(accessToken!=null) {
-        headers['authorization']  = accessToken;
+      if (accessToken != null) {
+        headers['token'] = accessToken;
       }
-
+      if (queryParams != null) {
+        url += '?';
+        for (String param in queryParams.keys) {
+          url += '$param=${queryParams[param]}&';
+        }
+      }
+      Uri uri = Uri.parse(url);
       _logRequest(url);
-      Response response = await get(uri,headers: headers);
+      Response response = await get(uri, headers: headers);
       _logResponse(url, response.statusCode, response.headers, response.body);
-
-      _logger.i('sssss => ${uri}');
-      _logger.i('STATUS => ${response.statusCode}');
-
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         final decodedMessage = jsonDecode(response.body);
         return NetworkResponse(
-          isSuccess: true,
-          statusCode: response.statusCode,
-          responsedata: decodedMessage,
-        );
+            isSuccess: true,
+            statusCode: response.statusCode,
+            responseData: decodedMessage);
       } else {
         return NetworkResponse(
-          isSuccess: false,
-          statusCode: response.statusCode,
-          responsedata: null,
-        );
+            isSuccess: false, statusCode: response.statusCode);
       }
     } catch (e) {
       _logResponse(url, -1, null, '', e.toString());
       return NetworkResponse(
-        isSuccess: false,
-        statusCode: -1,
-        responsedata: null,
-        errorMessage: 'Error: $e',
-      );
+          isSuccess: false, statusCode: -1, errorMessage: e.toString());
     }
   }
 
@@ -65,39 +60,33 @@ class NetworkCaller {
       {Map<String, dynamic>? body}) async {
     try {
       Uri uri = Uri.parse(url);
-      Map<String, String> headers = {'content-type': 'application/json'};
-
-      _logRequest(
-        url,
-        headers,
-        body,
-      );
+      Map<String, String> headers = {
+        'content-type': 'application/json',
+      };
+      _logRequest(url, headers, body);
       Response response =
-          await post(uri, headers: headers, body: jsonEncode(body));
+      await post(uri, headers: headers, body: jsonEncode(body));
       _logResponse(url, response.statusCode, response.headers, response.body);
-      _logger.i('STATUS => ${response.statusCode}');
-      if (response.statusCode == 200) {
+      if (response.statusCode == 200 || response.statusCode == 201) {
         final decodedMessage = jsonDecode(response.body);
         return NetworkResponse(
-          isSuccess: true,
-          statusCode: response.statusCode,
-          responsedata: decodedMessage,
-        );
+            isSuccess: true,
+            statusCode: response.statusCode,
+            responseData: decodedMessage);
       } else {
+        final decodedMessage = jsonDecode(response.body);
+        ErrorResponseModel errorResponseModel =
+        ErrorResponseModel.fromJson(decodedMessage);
         return NetworkResponse(
           isSuccess: false,
           statusCode: response.statusCode,
-          responsedata: null,
+          errorMessage: errorResponseModel.msg,
         );
       }
     } catch (e) {
       _logResponse(url, -1, null, '', e.toString());
       return NetworkResponse(
-        isSuccess: false,
-        statusCode: -1,
-        responsedata: null,
-        errorMessage: 'Error: $e',
-      );
+          isSuccess: false, statusCode: -1, errorMessage: e.toString());
     }
   }
 

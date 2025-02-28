@@ -53,7 +53,7 @@ class _ColorPickerWidgetState extends State<ColorPickerWidget> {
         margin: const EdgeInsets.only(right: 8),
         decoration: BoxDecoration(
           border: Border.all(),
-          color: isSelected ? Appcolors.themeColor : Colors.transparent,
+          color: isSelected ? AppColors.themeColor : Colors.transparent,
         ),
         alignment: Alignment.center,
         child: Text(

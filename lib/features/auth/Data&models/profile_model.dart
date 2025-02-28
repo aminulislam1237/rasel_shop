@@ -1,4 +1,6 @@
-import 'package:rasel_shop/features/auth/ui/data/models/user_model.dart';
+
+
+import 'package:rasel_shop/features/auth/Data&models/user_model.dart';
 
 class ProfileModel {
   int? id;

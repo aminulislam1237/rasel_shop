@@ -1,21 +1,25 @@
+
 import 'package:get/get.dart';
-import 'package:rasel_shop/features/common/data/models/product_list_model.dart';
-import 'package:rasel_shop/features/common/data/models/product_model.dart';
-import 'package:rasel_shop/services/network_caller/network_caller.dart';
+
 import '../../../../app/urls.dart';
+import '../../../../services/network_caller/network_caller.dart';
+import '../../../common/data&model/product_list_model.dart';
+import '../../../common/data&model/product_model.dart';
 
 class ProductListByRemarkController extends GetxController {
   bool _popularProductInProgress = false;
   bool _specialProductInProgress = false;
   bool _newProductInProgress = false;
 
+  bool get popularProductInProgress => _popularProductInProgress;
+
+  bool get specialProductInProgress => _specialProductInProgress;
+
+  bool get newProductInProgress => _newProductInProgress;
+
   ProductListModel? _popularProductListModel;
   ProductListModel? _specialProductListModel;
   ProductListModel? _newProductListModel;
-
-  bool get popularProductInProgress => _popularProductInProgress;
-  bool get specialProductInProgress => _specialProductInProgress;
-  bool get newProductInProgress => _newProductInProgress;
 
   List<ProductModel> get popularProductList =>
       _popularProductListModel?.productList ?? [];
@@ -26,13 +30,15 @@ class ProductListByRemarkController extends GetxController {
   List<ProductModel> get newProductList =>
       _newProductListModel?.productList ?? [];
 
-  String? _populerErrorMessage;
+  String? _popularErrorMessage;
   String? _specialErrorMessage;
   String? _newErrorMessage;
 
-  String? get PopulerErrorMessage => _populerErrorMessage;
-  String? get SpecialErrorMessage => _specialErrorMessage;
-  String? get NewErrorMessage => _newErrorMessage;
+  String? get popularErrorMessage => _popularErrorMessage;
+
+  String? get specialErrorMessage => _specialErrorMessage;
+
+  String? get newErrorMessage => _newErrorMessage;
 
   Future<bool> getProductListByRemark(String remark) async {
     bool isSuccess = false;
@@ -43,42 +49,37 @@ class ProductListByRemarkController extends GetxController {
     } else {
       _newProductInProgress = true;
     }
-
     update();
-
     final NetworkResponse response = await Get.find<NetworkCaller>()
-        .getRequest(Urls.productLisbyRemarktUrl(remark));
-
+        .getRequest(Urls.productListByRemarkUrl(remark));
     if (response.isSuccess) {
       if (remark == 'popular') {
         _popularProductListModel =
-            ProductListModel.fromJson(response.responsedata);
+            ProductListModel.fromJson(response.responseData);
       } else if (remark == 'special') {
         _specialProductListModel =
-            ProductListModel.fromJson(response.responsedata);
+            ProductListModel.fromJson(response.responseData);
       } else {
-        _newProductListModel = ProductListModel.fromJson(response.responsedata);
+        _newProductListModel = ProductListModel.fromJson(response.responseData);
       }
       isSuccess = true;
-      update(); // Notify UI
-      return true; // Success
     } else {
       if (remark == 'popular') {
-        _populerErrorMessage = response.errorMessage; // Set error message
+        _popularErrorMessage = response.errorMessage;
       } else if (remark == 'special') {
-        _specialErrorMessage = response.errorMessage; // Set error message
+        _specialErrorMessage = response.errorMessage;
       } else {
-        _newErrorMessage = response.errorMessage; // Set error message
+        _newErrorMessage = response.errorMessage;
       }
-      if (remark == 'popular') {
-        _popularProductInProgress = false;
-      } else if (remark == 'special') {
-        _specialProductInProgress = false;
-      } else {
-        _newProductInProgress = false;
-      }
-      update(); // Notify UI
-      return isSuccess; // Failure
     }
+    if (remark == 'popular') {
+      _popularProductInProgress = false;
+    } else if (remark == 'special') {
+      _specialProductInProgress = false;
+    } else {
+      _newProductInProgress = false;
+    }
+    update();
+    return isSuccess;
   }
 }

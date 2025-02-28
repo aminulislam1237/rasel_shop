@@ -1,11 +1,14 @@
+
 import 'package:flutter/material.dart';
-import 'package:rasel_shop/features/common/data/models/product_model.dart';
-import 'package:rasel_shop/features/product/ui/screens/product_details_screen.dart';
-import '../../../../app/app_colors.dart';
+import 'package:rasel_shop/app/app_colors.dart';
+
+import '../../../product/ui/screens/product_details_screen.dart';
+import '../../data&model/product_model.dart';
 
 class ProductItemWidget extends StatelessWidget {
   const ProductItemWidget({
-    super.key, required this.productModel,
+    super.key,
+    required this.productModel
   });
 
   final ProductModel productModel;
@@ -20,52 +23,48 @@ class ProductItemWidget extends StatelessWidget {
         width: 140,
         child: Card(
           color: Colors.white,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
           child: Column(
             children: [
               Container(
                 decoration: BoxDecoration(
-                  color: Appcolors.themeColor.withOpacity(0.12),
+                  color: AppColors.themeColor.withOpacity(0.12),
                   borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(16),
                     topRight: Radius.circular(16),
                   ),
                 ),
                 child: Image.network(
-                  productModel.image??'', // Changed to forward slashes
-                  width: 120,
-                  fit: BoxFit.cover, // Added fit property
+                  productModel.image ?? '',
+                  width: 140,
+                  height: 90,
+                  fit: BoxFit.scaleDown,
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                     Text(
-                      productModel.title??'',
+                    Text(
+                      productModel.title ?? '',
                       maxLines: 1,
                       style: const TextStyle(
-                        overflow: TextOverflow.ellipsis,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.black54,
-                      ),
+                          overflow: TextOverflow.ellipsis,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black54),
                     ),
-                    const SizedBox(
-                      height: 2,
-                    ),
+                    const SizedBox(height: 2),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                         Text(
-                          '\$${productModel.price??''}',
+                        Text(
+                          '\$${productModel.price ?? ''}',
                           style: const TextStyle(
                             fontWeight: FontWeight.w600,
-                            color: Appcolors.themeColor,
+                            color: AppColors.themeColor,
                           ),
                         ),
-                         Wrap(
+                        Row(
                           children: [
                             const Icon(
                               Icons.star,
@@ -73,10 +72,10 @@ class ProductItemWidget extends StatelessWidget {
                               size: 18,
                             ),
                             Text(
-                              '${productModel.star??'0.0'}',
+                              '${productModel.star ?? '0.0'}',
                               style: const TextStyle(
                                 fontWeight: FontWeight.w600,
-                                color: Appcolors.themeColor,
+                                color: AppColors.themeColor,
                               ),
                             ),
                           ],
@@ -84,20 +83,17 @@ class ProductItemWidget extends StatelessWidget {
                         Container(
                           padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
-                            color: Appcolors.themeColor,
-                            borderRadius: BorderRadius.circular(4),
-                          ),
+                              color: AppColors.themeColor,
+                              borderRadius: BorderRadius.circular(4)),
                           child: const Icon(
                             Icons.favorite_border,
                             size: 14,
                             color: Colors.white,
                           ),
-                        ),
+                        )
                       ],
                     ),
-                    const SizedBox(
-                      height: 4,
-                    )
+                    const SizedBox(height: 4),
                   ],
                 ),
               )

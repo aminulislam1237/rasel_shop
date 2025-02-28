@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../../../../app/app_colors.dart';
 import '../../../../app/assets_path.dart';
 import '../../../product/ui/widgets/product_quantity_inc_dec_button.dart';
@@ -62,7 +61,7 @@ class CartProductItemWidget extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text('\$100',style: TextStyle( color: Appcolors.themeColor,
+                          const Text('\$100',style: TextStyle( color: AppColors.themeColor,
                               fontSize: 18,
                               fontWeight: FontWeight.w600)),
                           ProductQuantityIncDecButton(

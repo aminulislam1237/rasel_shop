@@ -53,7 +53,7 @@ class _sizePickerWidgetState extends State<sizePickerWidget> {
         margin: const EdgeInsets.only(right: 8),
         decoration: BoxDecoration(
           border: Border.all(),
-          color: isSelected ? Appcolors.themeColor : Colors.transparent,
+          color: isSelected ? AppColors.themeColor : Colors.transparent,
         ),
         alignment: Alignment.center,
         child: Text(

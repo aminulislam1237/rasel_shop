@@ -1,3 +1,4 @@
-class AppConstants{
-  static const int resendOtpInsecs = 120;
+
+class AppConstants {
+  static const int resendOtpTimeOutInSecs = 120;
 }

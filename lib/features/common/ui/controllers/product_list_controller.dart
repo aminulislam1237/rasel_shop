@@ -1,38 +1,38 @@
+
 import 'package:get/get.dart';
-import 'package:rasel_shop/features/common/data/models/product_list_model.dart';
-import 'package:rasel_shop/features/common/data/models/product_model.dart';
-import 'package:rasel_shop/services/network_caller/network_caller.dart';
+
 import '../../../../app/urls.dart';
+import '../../../../services/network_caller/network_caller.dart';
+import '../../data&model/product_list_model.dart';
+import '../../data&model/product_model.dart';
 
 class ProductListController extends GetxController {
   bool _inProgress = false;
-  ProductListModel? _productListModel;
-  String? _errorMessage;
 
   bool get inProgress => _inProgress;
+
+  ProductListModel? _productListModel;
+
   List<ProductModel> get productList => _productListModel?.productList ?? [];
+
+  String? _errorMessage;
+
   String? get errorMessage => _errorMessage;
 
   Future<bool> getProductListByCategory(int categoryId) async {
-    _inProgress = true; // Start loading
-    update(); // Notify UI
-
+    bool isSuccess = false;
+    _inProgress = true;
+    update();
     final NetworkResponse response = await Get.find<NetworkCaller>()
-        .getRequest(Urls.productLisbyCategoryUrl(categoryId));
-
+        .getRequest(Urls.productListByCategoryUrl(categoryId));
     if (response.isSuccess) {
-      // Parse response data
-      _productListModel = ProductListModel.fromJson(response.responsedata);
-      _errorMessage = null; // Clear previous error message on success
-      _inProgress = false; // Stop loading
-      update(); // Notify UI
-      return true; // Success
+      _productListModel = ProductListModel.fromJson(response.responseData);
+      isSuccess = true;
     } else {
-      // Handle error
-      _errorMessage = response.errorMessage; // Set error message
-      _inProgress = false; // Stop loading
-      update(); // Notify UI
-      return false; // Failure
+      _errorMessage = response.errorMessage;
     }
+    _inProgress = false;
+    update();
+    return isSuccess;
   }
 }

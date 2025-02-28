@@ -111,7 +111,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
                                         Container(
                                           padding: const EdgeInsets.all(4),
                                           decoration: BoxDecoration(
-                                            color: Appcolors.themeColor,
+                                            color: AppColors.themeColor,
                                             borderRadius:
                                                 BorderRadius.circular(4),
                                           ),
@@ -180,7 +180,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Appcolors.themeColor.withOpacity(0.15),
+        color: AppColors.themeColor.withOpacity(0.15),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -195,7 +195,7 @@ class _ProductDetailsScreenState extends State<ProductDetailsScreen> {
               Text(
                 '\$$price',
                 style: const TextStyle(
-                  color: Appcolors.themeColor,
+                  color: AppColors.themeColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 18,
                 ),

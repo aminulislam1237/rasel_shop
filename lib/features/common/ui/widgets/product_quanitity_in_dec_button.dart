@@ -1,10 +1,11 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 import 'package:rasel_shop/app/app_colors.dart';
 
 class ProductQuantityIncDecButton extends StatefulWidget {
   const ProductQuantityIncDecButton({super.key, required this.onChange});
-  final Function(int ) onChange;
+
+  final Function(int) onChange;
 
   @override
   State<ProductQuantityIncDecButton> createState() =>
@@ -22,12 +23,10 @@ class _ProductQuantityIncDecButtonState
         _buildIconButton(
             icon: Icons.remove,
             onTap: () {
-              if (_count>1) {
+              if (_count > 1) {
                 _count--;
                 widget.onChange(_count);
-                setState(() {
-
-                });
+                setState(() {});
               }
             }),
         Padding(
@@ -41,15 +40,15 @@ class _ProductQuantityIncDecButtonState
           ),
         ),
         _buildIconButton(
-            icon: Icons.add,
-            onTap: () {
-              if (_count<20) {
-                _count++;
-                widget.onChange(_count);
-                setState(() {
-                });
-              }
-            }),
+          icon: Icons.add,
+          onTap: () {
+            if (_count < 20) {
+              _count++;
+              widget.onChange(_count);
+              setState(() {});
+            }
+          },
+        ),
       ],
     );
   }
@@ -61,14 +60,10 @@ class _ProductQuantityIncDecButtonState
       child: Container(
         padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: AppColors.themeColor,
-          borderRadius: BorderRadius.circular(4),
-        ),
+            color: AppColors.themeColor,
+            borderRadius: BorderRadius.circular(4)),
         alignment: Alignment.center,
-        child: Icon(
-          icon,
-          color: Colors.white,
-        ),
+        child: Icon(icon, color: Colors.white),
       ),
     );
   }
